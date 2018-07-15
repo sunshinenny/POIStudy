@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.TreeSet;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -74,9 +75,18 @@ public class projectCheckListTest {
 				originExcelHeadString.add(headRow.getCell(i).toString());
 				// 循环结束后,表头字段存储完毕
 			}
+
 			// 实现表头字段的简单去重(即两个字段名是一样的可以去重,但是两个字段名不一样,表达同一个意思时无法实现)
-			originExcelHeadString = new ArrayList<String>(new HashSet<String>(originExcelHeadString));
+			// originExcelHeadString = new ArrayList<String>(new
+			// HashSet<String>(originExcelHeadString));
+
+			// 使用 HashSet 去重后的 List 元素顺序可能与原 List 不一样，可以使用 TreeSet 代替 HashSet
+			// 实现同样的功能，且保证顺序一致性。
+			originExcelHeadString = new ArrayList<String>(new TreeSet<String>(originExcelHeadString));
+
+			// 输出查看获取的表头元素
 			System.out.println(originExcelHeadString);
+
 			// 开始在自定义的库中进行匹对关键词(basicCheckTable)
 			// 从表头字段list开始外循环
 			for (int i = 0; i < originExcelHeadString.size(); i++) {
