@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -73,6 +74,8 @@ public class projectCheckListTest {
 				originExcelHeadString.add(headRow.getCell(i).toString());
 				// 循环结束后,表头字段存储完毕
 			}
+			// 实现表头字段的简单去重(即两个字段名是一样的可以去重,但是两个字段名不一样,表达同一个意思时无法实现)
+			originExcelHeadString = new ArrayList<String>(new HashSet<String>(originExcelHeadString));
 			System.out.println(originExcelHeadString);
 			// 开始在自定义的库中进行匹对关键词(basicCheckTable)
 			// 从表头字段list开始外循环
