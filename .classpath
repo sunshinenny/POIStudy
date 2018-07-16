@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="D:/Study System/Code/资料/Jar包/poi-3.17/poi-ooxml-3.17.jar"/>
 	<classpathentry kind="lib" path="D:/Study System/Code/资料/Jar包/poi-3.17/poi-ooxml-schemas-3.17.jar"/>
 	<classpathentry kind="lib" path="D:/Study System/Code/资料/Jar包/poi-3.17/lib/commons-collections4-4.1.jar"/>
+	<classpathentry kind="lib" path="D:/Study System/Code/资料/Jar包/mysql-connector-java-8.0.11.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
