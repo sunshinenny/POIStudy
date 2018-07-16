@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -16,28 +15,40 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 public class readOriginExcelFile {
-	/**
-	 * 建立基本对照表basicCheckTable
-	 */
+
 	static String filePath;
+
+	/**
+	 * 构造函数,获取filePath-文件地址
+	 * 
+	 * @param filePath
+	 */
 	public readOriginExcelFile(String filePath) {
-		// TODO Auto-generated constructor stub
-		readOriginExcelFile.filePath=filePath;
+		readOriginExcelFile.filePath = filePath;
 	}
 
+	/**
+	 * 建立基本对照表basicCheckTable
+	 * 
+	 * @return basicCheckTable
+	 */
 	public Map<String, String> readOriginExcelFile() {
 		ArrayList<String[]> basicCheckTable = new ArrayList<String[]>();
 		String[] idArray = { "id", "ID", "编号", "教师编号", "教师ID", "教师id" };
 		String[] nameArray = { "name", "Name", "姓名", "教师姓名", "教师Name", "教师name" };
 		String[] sexArray = { "sex", "Sex", "性别", "教师性别" };
 		String[] ageArray = { "age", "Age", "年龄" };
-		String[] emailArray = { "email", "邮件地址", "邮件","邮箱","电子邮箱"};
-		
+		String[] emailArray = { "email", "邮件地址", "邮件", "邮箱", "电子邮箱" };
+		String[] phoneArray = { "phoneNumber", "手机号", "联系电话", "电话", "手机", "号码" };
+		String[] addressArray = { "address", "地址", "家庭地址", "居住地址" };
+
 		basicCheckTable.add(idArray);
 		basicCheckTable.add(nameArray);
 		basicCheckTable.add(sexArray);
 		basicCheckTable.add(ageArray);
 		basicCheckTable.add(emailArray);
+		basicCheckTable.add(phoneArray);
+		basicCheckTable.add(addressArray);
 
 		// feature->高级去重功能,可以先将字段名和判断后的类别组成字典,通过字典自己去重,即键值对的形式
 		// 新建LinkedHashMap类型的basicAndHeadStringMap对象,按照顺序存储excel中的字段
@@ -141,18 +152,19 @@ public class readOriginExcelFile {
 				}
 			}
 
-			/**
-			 * 遍历器遍历basicAndHeadStringMap,查看map中的数据
-			 */
-			Iterator<String> basicAndHeadStringMapIter = basicAndHeadStringMap.keySet().iterator();
-
-			while (basicAndHeadStringMapIter.hasNext()) {
-				String key = null;
-				String value = null;
-				key = basicAndHeadStringMapIter.next();
-				value = basicAndHeadStringMap.get(key);
-				System.out.println("匹配值为: " + key + " 列名为: " + value);
-			}
+			// /**
+			// * 遍历器遍历basicAndHeadStringMap,查看map中的数据
+			// */
+			// Iterator<String> basicAndHeadStringMapIter =
+			// basicAndHeadStringMap.keySet().iterator();
+			//
+			// while (basicAndHeadStringMapIter.hasNext()) {
+			// String key = null;
+			// String value = null;
+			// key = basicAndHeadStringMapIter.next();
+			// value = basicAndHeadStringMap.get(key);
+			// System.out.println("匹配值为: " + key + " 列名为: " + value);
+			// }
 
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -58,7 +58,7 @@ public class createAimExcelFile {
 		// 创建数据行
 		Row valueRow = mainSheet.createRow(1);
 		for (int i = 0; i < headStringArray.size(); i++) {
-			valueRow.createCell(i).setCellValue(headToValueArray.get(i).toString());
+			valueRow.createCell(i).setCellValue(headToValueArray.get(i));
 		}
 		// 保存为 Excel 文件
 		FileOutputStream out = null;
