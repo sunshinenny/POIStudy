@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -41,8 +43,8 @@ public class projectCheckListTest {
 		basicCheckTable.add(ageArray);
 
 		// feature->高级去重功能,可以先将字段名和判断后的类别组成字典,通过字典自己去重,即键值对的形式
-		// 新建TreeMap类型
-		TreeMap<String, String> basicAndHeadStringMap = new TreeMap<>();
+		// 新建LinkedHashMap类型的basicAndHeadStringMap对象,按照顺序存储excel中的字段
+		Map<String, String> basicAndHeadStringMap = new LinkedHashMap<>();
 
 		/**
 		 * 新建存储对象
@@ -146,7 +148,7 @@ public class projectCheckListTest {
 				String value = null;
 				key = basicAndHeadStringMapIter.next();
 				value = basicAndHeadStringMap.get(key);
-				System.out.println("匹配值为: "+key + " 列名为: " + value);
+				System.out.println("匹配值为: " + key + " 列名为: " + value);
 			}
 
 		} catch (IOException e) {
