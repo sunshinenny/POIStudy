@@ -5,19 +5,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.Iterator;
+import java.util.TreeMap;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-
-import com.domain.ticket;
 
 public class projectCheckListTest {
 	public static void main(String[] args) {
@@ -45,6 +40,10 @@ public class projectCheckListTest {
 		basicCheckTable.add(sexArray);
 		basicCheckTable.add(ageArray);
 
+		// feature->高级去重功能,可以先将字段名和判断后的类别组成字典,通过字典自己去重,即键值对的形式
+		// 新建TreeMap类型
+		TreeMap<String, String> basicAndHeadStringMap = new TreeMap<>();
+
 		/**
 		 * 新建存储对象
 		 */
@@ -56,9 +55,6 @@ public class projectCheckListTest {
 		 */
 		File excelFile = null;// Excel文件对象
 		InputStream is = null;// 输入流对象
-		String cellStr = null;// 单元格，最终按字符串处理
-		List<ticket> ticketList = new ArrayList<ticket>();// 返回封装数据的List
-		ticket tic = null;// 每一张票的信息对象
 		/**
 		 * 开始读取文件
 		 */
@@ -73,7 +69,7 @@ public class projectCheckListTest {
 			Row headRow = sheet.getRow(0);// 获取表头行
 			for (int i = 0; i < headRow.getLastCellNum(); i++) {
 				// 只有不为空的字段才会被加入匹配列表,实现去除空字段
-				if (headRow.getCell(i)!=null)
+				if (headRow.getCell(i) != null)
 					originExcelHeadString.add(headRow.getCell(i).toString());
 				// 循环结束后,表头字段存储完毕
 			}
@@ -84,10 +80,9 @@ public class projectCheckListTest {
 
 			// 使用 HashSet 去重后的 List 元素顺序可能与原 List 不一样，可以使用 TreeSet 代替 HashSet
 			// 实现同样的功能，且保证顺序一致性。
-			originExcelHeadString = new ArrayList<String>(new TreeSet<String>(originExcelHeadString));
+			// originExcelHeadString = new ArrayList<String>(new
+			// TreeSet<String>(originExcelHeadString));
 
-			// feature->高级去重功能,可以先将字段名和判断后的类别组成字典,通过字典自己去重,即键值对的形式
-			
 			// 输出查看获取的表头元素
 			System.out.println(originExcelHeadString);
 
@@ -102,8 +97,19 @@ public class projectCheckListTest {
 					for (int k = 0; k < tempArray.length; k++) {
 						// 如果匹配成功,就显示其对应的最简化字符串
 						if (tempArray[k].equals(originExcelHeadString.get(i))) {
-							System.out.println(
-									"存在' " + originExcelHeadString.get(i) + " ' ,对应结果为," + tempArray[0] + "字段");
+							/**
+							 * 存入键值对,以便于高级去重&后续其他功能
+							 */
+
+							// 如果已经存在就跳出循环
+							if (basicAndHeadStringMap.containsKey(tempArray[0])) {
+								break begin;
+							} else {
+								// 否则就加入该类型到map中
+								basicAndHeadStringMap.put(tempArray[0], originExcelHeadString.get(i));
+							}
+							// System.out.println(
+							// "存在' " + originExcelHeadString.get(i) + " ' ,对应结果为," + tempArray[0] + "字段");
 							// 匹配到对应字段后,回到起点,以便于下一次便利
 							j = 0;
 							// 可以直接跳出循环了,暂时不考虑有多个重复表头的情况
@@ -130,6 +136,19 @@ public class projectCheckListTest {
 				}
 			}
 
+			/**
+			 * 遍历器遍历basicAndHeadStringMap,查看map中的数据
+			 */
+			Iterator<String> basicAndHeadStringMapIter = basicAndHeadStringMap.keySet().iterator();
+
+			while (basicAndHeadStringMapIter.hasNext()) {
+				String key = null;
+				String value = null;
+				key = basicAndHeadStringMapIter.next();
+				value = basicAndHeadStringMap.get(key);
+				System.out.println("匹配值为: "+key + " 列名为: " + value);
+			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InvalidFormatException e) {
@@ -142,10 +161,6 @@ public class projectCheckListTest {
 					e.printStackTrace();
 				}
 			}
-		}
-		for (Object i : ticketList) {
-			System.out
-					.println(((ticket) i).getDate() + "\t" + ((ticket) i).getFrom() + "\t->\t" + ((ticket) i).getEnd());
 		}
 	}
 }
